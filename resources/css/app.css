@@ -1,0 +1,458 @@
+/*
+=====================================================
+CHAT APP - MODERN CUSTOM CSS
+Bootstrap 5 ile birlikte kullanılır
+=====================================================
+*/
+
+/* ==================== ROOT VARIABLES (CSS Değişkenleri) ==================== */
+:root {
+    /* Ana renkler */
+    --primary-color: #4F46E5;      /* İndigo - Ana marka rengi */
+    --secondary-color: #10B981;    /* Yeşil - Başarı mesajları için */
+    --danger-color: #EF4444;       /* Kırmızı - Hata ve silme işlemleri */
+    --warning-color: #F59E0B;      /* Turuncu - Uyarılar için */
+    --info-color: #3B82F6;         /* Mavi - Bilgilendirme */
+    
+    /* Arka plan renkleri */
+    --bg-primary: #FFFFFF;         /* Beyaz - Ana arka plan */
+    --bg-secondary: #F9FAFB;       /* Açık gri - İkincil alan */
+    --bg-chat: #F3F4F6;            /* Daha açık gri - Chat arka planı */
+    --bg-hover: #E5E7EB;           /* Hover efekti için */
+    
+    /* Metin renkleri */
+    --text-primary: #1F2937;       /* Koyu gri - Ana metin */
+    --text-secondary: #6B7280;     /* Orta gri - İkincil metin */
+    --text-muted: #9CA3AF;         /* Açık gri - Pasif metin */
+    --text-white: #FFFFFF;         /* Beyaz metin */
+    
+    /* Kenarlık renkleri */
+    --border-color: #E5E7EB;       /* Açık gri - Kenarlıklar */
+    --border-hover: #D1D5DB;       /* Hover durumu */
+    
+    /* Gölge efektleri */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);          /* Küçük gölge */
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);        /* Orta gölge */
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);      /* Büyük gölge */
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);      /* Çok büyük gölge */
+    
+    /* Geçiş efektleri */
+    --transition-fast: 0.15s ease-in-out;     /* Hızlı geçiş */
+    --transition-normal: 0.3s ease-in-out;    /* Normal geçiş */
+    --transition-slow: 0.5s ease-in-out;      /* Yavaş geçiş */
+    
+    /* Mesaj baloncuğu */
+    --msg-sent-bg: #4F46E5;        /* Gönderilen mesaj arka planı */
+    --msg-received-bg: #FFFFFF;    /* Alınan mesaj arka planı */
+    
+    /* Online/Offline göstergeleri */
+    --online-color: #10B981;       /* Yeşil - Çevrimiçi */
+    --offline-color: #9CA3AF;      /* Gri - Çevrimdışı */
+}
+
+/* ==================== KARANILIK MOD (Dark Mode) ==================== */
+[data-theme="dark"] {
+    --bg-primary: #1F2937;
+    --bg-secondary: #111827;
+    --bg-chat: #0F172A;
+    --bg-hover: #374151;
+    --text-primary: #F9FAFB;
+    --text-secondary: #D1D5DB;
+    --text-muted: #9CA3AF;
+    --border-color: #374151;
+    --msg-received-bg: #374151;
+}
+
+/* ==================== GENEL STILLER ==================== */
+
+/* Body - Temel sayfa düzeni */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;  /* Yatay taşmayı engelle */
+}
+
+/* Scroll bar özelleştirme */
+::-webkit-scrollbar {
+    width: 8px;   /* Kaydırma çubuğu genişliği */
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);  /* Arka plan rengi */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);  /* Kaydırma çubuğu rengi */
+    border-radius: 4px;  /* Yuvarlatılmış köşeler */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);  /* Hover durumunda renk */
+}
+
+/* ==================== CHAT LAYOUT (Sohbet Düzeni) ==================== */
+
+/* Ana chat container */
+.chat-container {
+    display: flex;              /* Flexbox düzeni */
+    height: 100vh;              /* Tam ekran yüksekliği */
+    overflow: hidden;           /* Taşmaları gizle */
+}
+
+/* Sol sidebar - Konuşma listesi */
+.chat-sidebar {
+    width: 380px;                           /* Genişlik */
+    background-color: var(--bg-secondary);  /* Arka plan */
+    border-right: 1px solid var(--border-color);  /* Sağ kenarlık */
+    display: flex;
+    flex-direction: column;     /* Dikey hizalama */
+    overflow: hidden;
+}
+
+/* Sidebar başlığı */
+.sidebar-header {
+    padding: 1.25rem;                       /* İç boşluk */
+    background-color: var(--bg-primary);    /* Arka plan */
+    border-bottom: 1px solid var(--border-color);  /* Alt kenarlık */
+    flex-shrink: 0;             /* Küçülmeyi engelle */
+}
+
+/* Konuşma listesi scroll alanı */
+.conversations-list {
+    flex: 1;                    /* Kalan alanı doldur */
+    overflow-y: auto;           /* Dikey scroll */
+    overflow-x: hidden;         /* Yatay scroll yok */
+}
+
+/* Tekil konuşma item */
+.conversation-item {
+    padding: 1rem;                          /* İç boşluk */
+    cursor: pointer;                        /* El işareti */
+    transition: background-color var(--transition-fast);  /* Geçiş animasyonu */
+    border-bottom: 1px solid var(--border-color);  /* Alt kenarlık */
+    display: flex;
+    align-items: center;        /* Dikey ortalama */
+    gap: 1rem;                  /* Elemanlar arası boşluk */
+}
+
+.conversation-item:hover {
+    background-color: var(--bg-hover);  /* Hover durumunda arka plan */
+}
+
+.conversation-item.active {
+    background-color: var(--bg-hover);      /* Aktif konuşma arka planı */
+    border-left: 3px solid var(--primary-color);  /* Sol kenarlık vurgusu */
+}
+
+/* Avatar (Profil resmi) */
+.avatar {
+    width: 48px;                /* Genişlik */
+    height: 48px;               /* Yükseklik */
+    border-radius: 50%;         /* Tam yuvarlak */
+    object-fit: cover;          /* Resmi kes ve sığdır */
+    flex-shrink: 0;             /* Küçülmeyi engelle */
+    position: relative;
+}
+
+/* Online/Offline göstergesi */
+.avatar-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-primary);  /* Beyaz kenarlık */
+}
+
+.avatar-status.online {
+    background-color: var(--online-color);  /* Yeşil - Çevrimiçi */
+}
+
+.avatar-status.offline {
+    background-color: var(--offline-color);  /* Gri - Çevrimdışı */
+}
+
+/* ==================== CHAT WINDOW (Sohbet Penceresi) ==================== */
+
+/* Sağ taraf - Mesaj alanı */
+.chat-window {
+    flex: 1;                    /* Kalan alanı doldur */
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-chat);  /* Arka plan rengi */
+}
+
+/* Chat başlığı */
+.chat-header {
+    padding: 1.25rem;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;  /* İki yana yaslama */
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Mesajlar alanı */
+.messages-container {
+    flex: 1;
+    overflow-y: auto;           /* Dikey scroll */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;                  /* Mesajlar arası boşluk */
+}
+
+/* Mesaj baloncuğu */
+.message-bubble {
+    max-width: 65%;             /* Maksimum genişlik */
+    padding: 0.75rem 1rem;      /* İç boşluk */
+    border-radius: 1rem;        /* Yuvarlatılmış köşeler */
+    word-wrap: break-word;      /* Uzun kelimeleri kır */
+    box-shadow: var(--shadow-sm);  /* Hafif gölge */
+    animation: fadeIn 0.3s ease-in;  /* Belirme animasyonu */
+}
+
+/* Gönderilen mesaj (sağda) */
+.message-bubble.sent {
+    background-color: var(--msg-sent-bg);  /* İndigo arka plan */
+    color: var(--text-white);              /* Beyaz yazı */
+    align-self: flex-end;                  /* Sağa hizala */
+    border-bottom-right-radius: 0.25rem;   /* Sağ alt köşe kesik */
+}
+
+/* Alınan mesaj (solda) */
+.message-bubble.received {
+    background-color: var(--msg-received-bg);  /* Beyaz arka plan */
+    color: var(--text-primary);                /* Koyu yazı */
+    align-self: flex-start;                    /* Sola hizala */
+    border-bottom-left-radius: 0.25rem;        /* Sol alt köşe kesik */
+}
+
+/* Mesaj zamanı */
+.message-time {
+    font-size: 0.75rem;         /* Küçük yazı */
+    color: var(--text-muted);   /* Pasif renk */
+    margin-top: 0.25rem;        /* Üst boşluk */
+    text-align: right;          /* Sağa hizala */
+}
+
+/* ==================== MESSAGE INPUT (Mesaj Girişi) ==================== */
+
+/* Mesaj giriş alanı */
+.message-input-container {
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.message-input-wrapper {
+    display: flex;
+    gap: 0.75rem;               /* Elemanlar arası boşluk */
+    align-items: flex-end;      /* Alta hizala */
+}
+
+.message-input {
+    flex: 1;
+    resize: none;               /* Boyutlandırmayı engelle */
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;      /* Yuvarlatılmış köşeler */
+    padding: 0.75rem 1.25rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    min-height: 44px;           /* Minimum yükseklik */
+    max-height: 120px;          /* Maksimum yükseklik */
+    transition: border-color var(--transition-fast);
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: var(--primary-color);  /* Focus durumunda renk */
+}
+
+/* Gönder butonu */
+.send-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;         /* Tam yuvarlak */
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.send-button:hover {
+    background-color: #4338CA;  /* Koyu indigo */
+    transform: scale(1.05);     /* Hafif büyütme */
+}
+
+.send-button:active {
+    transform: scale(0.95);     /* Tıklama efekti */
+}
+
+/* ==================== ANIMATIONS (Animasyonlar) ==================== */
+
+/* Belirme animasyonu */
+@keyframes fadeIn {
+    from {
+        opacity: 0;             /* Şeffaf */
+        transform: translateY(10px);  /* Aşağıdan */
+    }
+    to {
+        opacity: 1;             /* Opak */
+        transform: translateY(0);     /* Normal konum */
+    }
+}
+
+/* Yazıyor göstergesi animasyonu */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem;
+}
+
+.typing-indicator-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.typing-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 0.5rem;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--text-muted);
+    animation: typing 1.4s infinite;
+    display: inline-block;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;      /* İkinci nokta gecikmeli */
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;      /* Üçüncü nokta daha gecikmeli */
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* ==================== RESPONSIVE (Mobil Uyum) ==================== */
+
+/* Tablet ve daha küçük ekranlar */
+@media (max-width: 768px) {
+    .chat-sidebar {
+        width: 100%;            /* Tam genişlik */
+        position: absolute;     /* Üst üste bindirme */
+        left: 0;
+        z-index: 10;
+        height: 100vh;
+    }
+    
+    .chat-sidebar.hidden {
+        transform: translateX(-100%);  /* Sola kaydır (gizle) */
+    }
+    
+    .message-bubble {
+        max-width: 80%;         /* Daha geniş mesajlar */
+    }
+}
+
+/* Çok küçük ekranlar (mobil) */
+@media (max-width: 480px) {
+    .sidebar-header {
+        padding: 1rem;
+    }
+    
+    .conversation-item {
+        padding: 0.75rem;
+    }
+    
+    .avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .message-bubble {
+        max-width: 90%;
+    }
+}
+
+/* ==================== GROUP CONFERENCE STYLES ==================== */
+
+/* Video grid layout */
+.conference-videos {
+    display: grid;
+    gap: 1rem;
+    height: calc(100vh - 180px);  /* Header ve kontroller için boşluk */
+    padding: 1rem;
+}
+
+/* 2 katılımcı - Yan yana */
+.conference-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* 3-4 katılımcı - 2x2 grid */
+.conference-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+/* 5-6 katılımcı - 2x3 grid */
+.conference-grid-6 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+/* 7-9 katılımcı - 3x3 grid */
+.conference-grid-9 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+/* Video item */
+.conference-video-item {
+    background: #000;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Participant name overlay */
+.participant-name {
+    font-size: 0.875rem;
+    z-index: 10;
+}
+
+/* Conference controls */
+.conference-controls {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
