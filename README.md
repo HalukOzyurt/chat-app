@@ -221,10 +221,10 @@ chat-app/
 ## 🔮 Gelecek Özellikler
 
 ### Kısa Vadede
-- [ ] Dosya/resim gönderme
+- [x] Dosya/resim gönderme
 - [ ] Emoji picker
 - [ ] Mesaj arama
-- [ ] Bildirim sesleri
+- [x] Bildirim sesleri
 
 ### Orta Vadede
 - [ ] WebRTC ile sesli arama

@@ -218,17 +218,40 @@ export default function ChatIndex({ conversations: initialConversations, users }
     /**
      * Bildirim sesi çal
      * Yeni mesaj geldiğinde ses efekti için
+     * Web Audio API kullanarak basit bir bildirim sesi üretir
      */
     const playNotificationSound = () => {
         try {
-            // HTML5 Audio API kullanarak ses çal
-            const audio = new Audio('/sounds/notification.mp3');
-            audio.volume = 0.5;  // Ses seviyesi (0.0 - 1.0)
-            audio.play().catch(err => {
-                console.log('Ses çalınamadı:', err);
-            });
+            // Web Audio API ile bildirim sesi oluştur
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // İki farklı frekansla pleasant bir bildirim sesi oluştur
+            const playTone = (frequency, startTime, duration) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+
+                // Yumuşak başlangıç ve bitiş için envelope
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            };
+
+            // İki tonlu bildirim sesi (C-E notaları)
+            const now = audioContext.currentTime;
+            playTone(523.25, now, 0.1);        // C5
+            playTone(659.25, now + 0.1, 0.15); // E5
+
         } catch (error) {
-            console.log('Ses dosyası bulunamadı:', error);
+            console.log('Bildirim sesi çalınamadı:', error);
         }
     };
 
